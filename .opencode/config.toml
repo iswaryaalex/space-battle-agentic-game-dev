@@ -1,0 +1,37 @@
+# OpenCode configuration — Space Blaster Workshop
+# This file wires OpenCode to the Lemonade local AI inference server
+
+[model]
+  # Lemonade serves OpenAI-compatible chat completions
+  # Provider prefix "openai/" tells OpenCode to use the OpenAI-compatible client
+  default = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
+
+[provider.openai]
+  # Point ALL OpenAI-client calls to the local Lemonade server
+  base_url    = "http://localhost:8000/api/v0"
+  api_key     = "lemonade"          # Lemonade ignores the key; any string works
+
+[context]
+  # These files are injected into every agent session automatically
+  auto_include = ["src/game.js", "src/index.html"]
+
+# ── Per-agent model overrides ──────────────────────────────────────────────
+# All three core agents use the same Qwen3-Coder model via Lemonade.
+# If you add a fourth or fifth agent, you can give each a different model here.
+
+[agents]
+  [agents.ui-renderer]
+    model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
+
+  [agents.physics-movement]
+    model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
+
+  [agents.gameplay-rules]
+    model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
+
+  # Optional agents — uncomment to activate
+  # [agents.audio-sfx]
+  #   model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
+
+  # [agents.boss-ai]
+  #   model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"

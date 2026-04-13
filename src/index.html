@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🚀 Space Blaster — AI-Built Game</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #03060f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Courier New', monospace;
+      color: #00e5ff;
+    }
+    h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.25em;
+      margin-bottom: 12px;
+      text-shadow: 0 0 18px #00e5ff;
+    }
+    canvas {
+      border: 2px solid #00e5ff44;
+      box-shadow: 0 0 40px #00e5ff22;
+    }
+    .controls {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      letter-spacing: 0.1em;
+    }
+    .badge {
+      margin-top: 10px;
+      font-size: 0.7rem;
+      opacity: 0.45;
+    }
+  </style>
+</head>
+<body>
+  <h1>✦ SPACE BLASTER ✦</h1>
+  <canvas id="gameCanvas"></canvas>
+  <p class="controls">WASD / ARROWS — move &nbsp;|&nbsp; SPACE / Z — fire &nbsp;|&nbsp; P — pause &nbsp;|&nbsp; R — restart</p>
+  <p class="badge">Built by the AI Multi-Agent Workshop Pipeline · Lemonade + OpenCode</p>
+  <script src="game.js"></script>
+</body>
+</html>

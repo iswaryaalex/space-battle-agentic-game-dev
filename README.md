@@ -32,64 +32,108 @@ space-blaster-workshop/
 
 ---
 
-## Setup (do this before the session)
+## Setup
 
-### 1 — Install Lemonade
+> No Node.js. No pip. No npm. Just two apt installs and a git clone.
+
+### 1 — Install Lemonade Server
+
+Lemonade runs large AI models locally on your AMD GPU via ROCm.
+Full details at: **https://lemonade-server.ai**
+
 ```bash
-pip install lemonade-server[rocm]
-lemonade pull Qwen3-Coder-30B-A3B-Instruct-GGUF
+sudo add-apt-repository ppa:lemonade-team/stable
+sudo apt install lemonade-server
 ```
-> ~18 GB download — do this on workshop Wi-Fi ahead of time.
 
 ### 2 — Install OpenCode
+
 ```bash
-npm install -g @opencode-ai/opencode
+curl -fsSL https://opencode.ai/install.sh | sh
 ```
 
-### 3 — Get the workshop files
+### 3 — Clone the workshop repo
+
 ```bash
-cp -r /media/workshop/space-blaster-workshop ~/
-cd ~/space-blaster-workshop
+git clone https://github.com/iswaryaalex/space-battle-agentic-game-dev.git
+cd space-battle-agentic-game-dev
 ```
 
 ---
 
 ## Workshop flow
 
-### Start Lemonade — keep this terminal open all session
-```bash
-lemonade serve --port 8000
-```
+### Step 1 — Launch OpenCode with Lemonade
 
-### Launch OpenCode in the project folder
+From inside the project folder:
+
 ```bash
-cd ~/space-blaster-workshop
 lemonade launch opencode
 ```
 
-OpenCode is now talking to your local GPU. Confirm with `/status`.
+Lemonade starts the inference server and launches OpenCode in one command.
+You will be prompted to select a model recipe:
+
+```
+Select a recipe to import and use with Opencode:
+  0) Browse downloaded models
+  1) GLM-4.7-Flash-GGUF-NoThinking.json
+  2) GLM-4.7-Flash-GGUF-ThinkingCoder.json
+  3) Gemma-4-26B-A4B-NoThinking.json
+  4) Gemma-4-26B-A4B-ThinkingCoder.json
+  5) Qwen3.5-35B-A3B-NoThinking.json
+  6) Qwen3.5-35B-A3B-ThinkingCoder.json
+```
+
+**Select option 6 — `Qwen3.5-35B-A3B-ThinkingCoder`**
+
+> Option 5 (NoThinking) is faster. Option 6 reasons through the code more
+> carefully — recommended for the best results during the workshop.
+
+### Step 2 — Confirm agents are loaded
+
+Inside OpenCode, type:
+
+```
+/agents
+```
+
+You should see:
+```
+ui-renderer
+physics-movement
+gameplay-rules
+vfx-polish      (optional)
+boss-ai         (optional)
+```
+
+You are all set. Now build the game.
 
 ---
 
 ## Build the game — invoke agents in order
 
-### Step 1
+### Step 3 — Visual layer
 ```
 @ui-renderer build the visual foundation of the game
 ```
-→ Canvas, star-field, ship art, enemy shapes, HUD, draw loop appear in `game.html`
+→ Canvas, star-field, ship art, enemy shapes, HUD, and draw loop written into `game.html`
 
-### Step 2
+### Step 4 — Physics layer
 ```
 @physics-movement add player movement, shooting, and collision detection
 ```
 → Ship moves, bullets fire, enemies fall, hits register
 
-### Step 3
+### Step 5 — Gameplay layer
 ```
 @gameplay-rules add scoring, levels, enemy spawning, lives, and game-over
 ```
-→ Fully playable game. Double-click `game.html` to play.
+→ Fully playable game. Open `game.html` in your browser:
+
+```bash
+xdg-open game.html
+```
 
 ---
 
@@ -117,6 +161,7 @@ make explosions leave a smoke cloud that fades slowly
 add a dodge-roll on Shift with invincibility frames and 2s cooldown
 make cruiser enemies strafe side to side while descending
 add a homing missile on the X key
+make enemies shoot back at the player starting at level 4
 ```
 
 ### `@gameplay-rules`
@@ -124,6 +169,7 @@ add a homing missile on the X key
 add a score combo — consecutive kills within 1.5s multiply points
 add a shield power-up that drops from bombers with 15% chance
 save the high score to localStorage and show it on game-over
+add a survival wave at level 3 — only drones for 10 seconds
 ```
 
 ---
@@ -148,21 +194,13 @@ Uncomment the relevant agent in `.opencode/config.toml`, then:
 
 ## Troubleshooting
 
-**Arrow keys not working** — click the canvas first to give it focus, or ask:
+**Arrow keys not working** — click the canvas to give it focus, or ask:
 ```
-@physics-movement arrow keys are not working — fix keyboard focus on the canvas
-```
-
-**Lemonade not starting**
-```bash
-rocm-smi   # confirm GPU is visible
-pip install lemonade-server[rocm] --force-reinstall
+@physics-movement arrow keys not working — fix keyboard focus on the canvas
 ```
 
-**Model slow or running on CPU**
-```bash
-lemonade serve --port 8000 --device gpu --gpu-layers 40
-```
+**Wrong model selected** — exit OpenCode, run `lemonade launch opencode` again
+and select option 5 or 6.
 
 **Agent broke the game**
 ```bash
@@ -171,7 +209,7 @@ git checkout game.html   # revert to last working state
 
 Commit after each working feature:
 ```bash
-git add game.html && git commit -m "feat: dodge roll"
+git add game.html && git commit -m "feat: what you added"
 ```
 
 ---
@@ -182,8 +220,9 @@ git add game.html && git commit -m "feat: dodge roll"
   AMD Ryzen AI Max 395 — Strix Halo — Ubuntu 24.04 + ROCm
   ┌────────────────────────────────────────────────────┐
   │                                                    │
-  │  Lemonade Server :8000                             │
-  │  └─► Qwen3-Coder-30B  (on-device GPU inference)   │
+  │  lemonade launch opencode                          │
+  │  └─► Lemonade Server  (on-device GPU inference)   │
+  │       └─► Qwen3.5-35B-A3B-ThinkingCoder           │
   │                                                    │
   │  OpenCode TUI                                      │
   │  ├─ @ui-renderer      ──► ui-renderer.md           │
@@ -192,6 +231,6 @@ git add game.html && git commit -m "feat: dodge roll"
   │  ├─ @vfx-polish       ──► vfx-polish.md  (opt)    │
   │  └─ @boss-ai          ──► boss-ai.md     (opt)     │
   │                 ↓                                  │
-  │            game.html  ←  single file, browser-ready│
+  │            game.html  ←  single file, double-click │
   └────────────────────────────────────────────────────┘
 ```

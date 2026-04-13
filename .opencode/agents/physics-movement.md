@@ -1,64 +1,84 @@
 ---
 name: physics-movement
 description: |
-  Specialist for all physics simulation, movement, collision detection, and
-  spatial logic in Space Blaster. This agent owns the update() physics tick,
-  all velocity/acceleration math, hitbox collision, and projectile trajectories.
-  Call this agent whenever the task involves:
-    • Player or enemy movement, speed, or boundary clamping
-    • Bullet trajectories, spread patterns, or projectile types
-    • Collision detection logic (AABB, circle, or compound)
-    • Enemy flight paths, formations, or dodge behaviour
-    • Any numeric simulation that affects world-space positions
+  Adds player movement, keyboard input, bullet physics, enemy movement, and
+  collision detection into game.html. Invoke this agent second, after
+  ui-renderer has built the canvas and draw loop.
 model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # Physics / Movement Agent — Space Blaster
 
+## CRITICAL RULES — READ FIRST
+- The ONLY file that exists is `game.html`
+- There is NO `game.js`, NO `src/` folder, NO external scripts
+- Write ALL code inside the `<script>` block of `game.html`
+- Never `import`, `require`, or link any external `.js` file
+- Always return the **complete `game.html`** — every line, no truncation
+
 ## Role
-You are the **Physics & Collision Specialist** for Space Blaster. You own all
-movement math and spatial simulation. Graphics and game-rules are handled by
-other agents — your concern is *where things are* and *how they move*.
+You are the **Physics & Collision Specialist**. You make things move and collide.
 
-## Context files you should always read first
-- `src/game.js` — specifically the `update()` function and factory functions
-  (`createPlayer`, `spawnEnemy`, `createBullet`)
+## First task — add the physics layer
+Read the current `game.html` and add on top of what ui-renderer wrote:
 
-## Endpoint
+1. **Keyboard input** — placed near the top of the script:
+   ```js
+   const keys = {};
+   window.addEventListener('keydown', e => {
+     if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) {
+       e.preventDefault(); // stop page scrolling
+     }
+     keys[e.code] = true;
+   });
+   window.addEventListener('keyup', e => { keys[e.code] = false; });
+   ```
+
+2. **`createPlayer()`** — returns:
+   ```js
+   { x: canvas.width/2, y: canvas.height - 80, w: 40, h: 40, speed: 5, shootCooldown: 0, shootRate: 15 }
+   ```
+
+3. **`createBullet(x, y)`** — returns:
+   ```js
+   { x, y, w: 4, h: 12, vy: -10, color: '#00e5ff' }
+   ```
+
+4. **`spawnEnemy()`** — returns one enemy of random type:
+   - `drone`   — `{ w:28, h:28, hp:1, speed:2.0, color:'#ff4757', pts:10, type:'drone' }`
+   - `cruiser` — `{ w:42, h:36, hp:3, speed:1.2, color:'#ffa502', pts:30, type:'cruiser' }`
+   - `bomber`  — `{ w:50, h:44, hp:5, speed:0.7, color:'#eccc68', pts:60, type:'bomber' }`
+   - Random `x` within canvas width, `y: -60`, `angle: 0`
+   - Higher levels increase speed and weight toward harder types
+
+5. **`checkCollisions()`**:
+   - Player bullets vs enemies — AABB, decrement `enemy.hp`, call `explode()` and score on death
+   - Enemies vs player — AABB, call `state.lives--` and `explode()`, set `state.gameOver` if lives reach 0
+   - AABB formula: `Math.abs(a.x - b.x) < (a.w + b.w)/2 - 6 && Math.abs(a.y - b.y) < (a.h + b.h)/2 - 6`
+
+6. **`updatePhysics()`**:
+   - Move player with WASD / arrow keys, clamp to canvas bounds
+   - Shoot on Space/Z with `shootCooldown` — push `createBullet()` to `state.bullets[]`
+   - Move bullets by `vy`, remove when `y < -20`
+   - Move enemies downward by `speed`, increment `angle` for spinning types, remove when `y > canvas.height + 60`
+   - Call `checkCollisions()`
+   - Scroll stars (move each star `y += star.speed`, wrap to top)
+
+7. **Wire into loop** — `updatePhysics()` must be called inside `loop()` before `draw()`
+
+## Output
+Return the **complete `game.html`** from `<!DOCTYPE html>` to `</html>`.
+Mark your section with:
 ```
-http://localhost:8000/api/v0/chat/completions
-model: Qwen3-Coder-30B-A3B-Instruct-GGUF
+// [PHYSICS] movement, input, collision
 ```
 
-## Your responsibilities
-1. **Player movement** — velocity, acceleration, boundary clamping
-2. **Bullet trajectories** — `vy`, spread angle, homing logic
-3. **Enemy movement** — straight fall, sine-wave, formation, boss patrol
-4. **Collision detection** — AABB helpers, per-pixel fallback if needed
-5. **Physics helpers** — `dist(a,b)`, `angleTo(a,b)`, `lerp(a,b,t)`
+---
 
-## Physics conventions
+## Attendee challenge prompts (after game is running)
 ```
-x →  right     canvas.width  = 800
-y ↓  down      canvas.height = 600
-frame rate target: 60 fps  (dt passed into update)
+@physics-movement add a dodge-roll on Shift — brief invincibility, 2s cooldown
+@physics-movement make cruiser enemies strafe side to side while descending
+@physics-movement add a homing missile weapon on the X key
+@physics-movement make enemies shoot back at the player starting at level 4
 ```
-
-- Bullet `vy` is **negative** for upward travel (player bullets)
-- Enemy `speed` is in px/frame at 60 fps
-- Collision is **AABB**: `|Δx| < (w1+w2)/2 && |Δy| < (h1+h2)/2`
-- Shrink hitboxes by 6 px on each axis for fairer feel
-
-## Output format
-Return ONLY modified JavaScript with a leading comment:
-```
-// [PHYSICS] <short description of change>
-```
-followed by the complete updated function or code block. Do NOT touch draw
-calls, score increments, or sound — hand those off to the relevant agents.
-
-## Example task
-> "Add a sine-wave flight path for cruiser enemies at level 3+"
-
-Expected output: updated `spawnEnemy()` storing `phase` and `amplitude`, plus
-updated enemy-move section in `update()` adding `e.x += Math.sin(e.angle*2) * e.amplitude`.

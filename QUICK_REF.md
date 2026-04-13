@@ -1,19 +1,12 @@
-# Space Blaster Workshop — Quick Reference
-
-## Setup (once)
-```bash
-pip install lemonade-server[rocm]
-lemonade pull Qwen3-Coder-30B-A3B-Instruct-GGUF
-npm install -g @opencode-ai/opencode
-```
+# Space Blaster — Quick Reference
 
 ## Every session
 ```bash
 # Terminal 1 — keep running
 lemonade serve --port 8000
 
-# Terminal 2 — in project folder
-lemonade launch opencode
+# Terminal 2
+cd ~/space-blaster-workshop && lemonade launch opencode
 ```
 
 ## Build the game (in order)
@@ -24,27 +17,17 @@ lemonade launch opencode
 ```
 
 ## Open the game
-Double-click `game.html` in your file manager — or:
-```bash
-open game.html      # macOS
-xdg-open game.html  # Linux
+Double-click `game.html`
+
+## Controls
+```
+WASD / Arrows — move     Space — shoot     P — pause     R — restart
 ```
 
-## Agent quick reference
+## Optional agents (uncomment in config.toml first)
 ```
-@ui-renderer        canvas, draw loop, HUD, particles, ship art
-@physics-movement   input, movement, bullets, collision
-@gameplay-rules     state, score, levels, spawning, game-over
-@vfx-polish         screen shake, trails, nebula (optional Agent 4)
-@boss-ai            boss fights, bullet patterns (optional Agent 5)
-```
-
-## Controls (once built)
-```
-WASD / Arrows  move
-Space          shoot
-P              pause
-R              restart
+@vfx-polish   screen shake, trails, nebula
+@boss-ai      3-phase boss at level 5
 ```
 
 ## Git safety net

@@ -1,6 +1,6 @@
-# Space Blaster Workshop — Quick Reference Card
+# Space Blaster Workshop — Quick Reference
 
-## Setup (run once)
+## Setup (once)
 ```bash
 pip install lemonade-server[rocm]
 lemonade pull Qwen3-Coder-30B-A3B-Instruct-GGUF
@@ -12,31 +12,43 @@ npm install -g @opencode-ai/opencode
 # Terminal 1 — keep running
 lemonade serve --port 8000
 
-# Terminal 2 — coding assistant
-cd ~/space-blaster-workshop && lemonade launch opencode
-
-# Terminal 3 — game in browser
-python3 -m http.server 3000 --directory src/
-# Open http://localhost:3000
+# Terminal 2 — in project folder
+lemonade launch opencode
 ```
 
-## Agent quick-invoke
+## Build the game (in order)
 ```
-@ui-renderer       → canvas drawing, HUD, particles, CSS
-@physics-movement  → movement, collision, bullet paths
-@gameplay-rules    → score, levels, power-ups, waves
-@vfx-polish        → screen shake, trails, nebulae (optional, Agent 4)
-@boss-ai           → boss fights, formations (optional, Agent 5)
+@ui-renderer      build the visual foundation of the game
+@physics-movement add player movement, shooting, and collision detection
+@gameplay-rules   add scoring, levels, enemy spawning, lives, and game-over
 ```
 
-## Lemonade endpoint (hardcoded in config.toml)
+## Open the game
+Double-click `game.html` in your file manager — or:
+```bash
+open game.html      # macOS
+xdg-open game.html  # Linux
 ```
-http://localhost:8000/api/v0/chat/completions
-model: Qwen3-Coder-30B-A3B-Instruct-GGUF
+
+## Agent quick reference
+```
+@ui-renderer        canvas, draw loop, HUD, particles, ship art
+@physics-movement   input, movement, bullets, collision
+@gameplay-rules     state, score, levels, spawning, game-over
+@vfx-polish         screen shake, trails, nebula (optional Agent 4)
+@boss-ai            boss fights, bullet patterns (optional Agent 5)
+```
+
+## Controls (once built)
+```
+WASD / Arrows  move
+Space          shoot
+P              pause
+R              restart
 ```
 
 ## Git safety net
 ```bash
-git add src/game.js && git commit -m "feat: <what you added>"
-git checkout src/game.js    # revert if something breaks
+git add game.html && git commit -m "feat: what you added"
+git checkout game.html   # revert if broken
 ```

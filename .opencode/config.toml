@@ -30,7 +30,7 @@
     model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
   # Optional agents — uncomment to activate
-  # [agents.audio-sfx]
+  # [agents.vfx-polish]
   #   model = "openai/Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
   # [agents.boss-ai]

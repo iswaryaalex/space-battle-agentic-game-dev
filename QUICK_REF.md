@@ -25,7 +25,7 @@ python3 -m http.server 3000 --directory src/
 @ui-renderer       → canvas drawing, HUD, particles, CSS
 @physics-movement  → movement, collision, bullet paths
 @gameplay-rules    → score, levels, power-ups, waves
-@audio-sfx         → Web Audio SFX (optional, Agent 4)
+@vfx-polish        → screen shake, trails, nebulae (optional, Agent 4)
 @boss-ai           → boss fights, formations (optional, Agent 5)
 ```
 

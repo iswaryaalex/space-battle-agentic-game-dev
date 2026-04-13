@@ -130,7 +130,7 @@ space-blaster-workshop/
 │       ├── ui-renderer.md     ← Agent 1: canvas drawing & HUD
 │       ├── physics-movement.md← Agent 2: movement & collision
 │       ├── gameplay-rules.md  ← Agent 3: scoring, levels, power-ups
-│       ├── audio-sfx.md       ← Agent 4 (optional): Web Audio SFX
+│       ├── vfx-polish.md      ← Agent 4 (optional): screen FX & trails
 │       └── boss-ai.md         ← Agent 5 (optional): boss fights & AI
 └── src/
     ├── index.html             ← Game shell
@@ -364,23 +364,45 @@ previous agent added — without any of them overwriting each other's work.
 
 ## Part 8 — Adding Optional Agents (Expand to 4–5)
 
-### Activating Agent 4 · `audio-sfx`
+### Activating Agent 4 · `vfx-polish`
 
-The agent file is already present at `.opencode/agents/audio-sfx.md`.
+The agent file is already present at `.opencode/agents/vfx-polish.md`.
 
-**Activate it:**
+This agent adds **purely visual feedback** — every game event that would
+normally have a sound cue is communicated through screen-space effects:
+shakes, flashes, trails, vignettes, and animated nebulae.
+
+**Activate it with these prompts in sequence:**
 
 ```
-@audio-sfx Create synthesised sound effects for laser fire, explosions,
-            and the level-up fanfare using only the Web Audio API
+@vfx-polish Add screen shake when the player takes damage, and a red
+            vignette that intensifies when lives drop to 1
 ```
 
-The agent will create `src/audio.js` and tell you exactly which line of
-`game.js` to import it from. No external sound files required — all sounds
-are generated procedurally in the browser.
+```
+@vfx-polish Add an animated purple-blue nebula cloud background that
+            slowly drifts across the star-field
+```
 
-**Expected outcome:** Laser pew, explosion boom, and a triumphant arpeggio
-on level-up — all from 30 lines of oscillator code.
+```
+@vfx-polish Add a motion trail behind the player ship that fades over
+            8 frames using ghost images at decreasing opacity
+```
+
+**Visual-to-sound mapping the agent knows about:**
+
+| Game event | Visual cue it adds |
+|------------|-------------------|
+| Player hit | Red full-screen flash + screen shake |
+| Enemy explodes | Trauma shake proportional to enemy size |
+| Level up | White wipe across the screen |
+| Shield absorbs hit | Expanding cyan ring from player position |
+| Boss spawns | Zoom-punch + red scanline sweep |
+| Lives = 1 | Persistent red vignette around screen edges |
+
+**Expected outcome:** The game feels dramatically more responsive and
+cinematic — entirely through visuals, which is actually more powerful in
+a workshop setting where attendees can *see* the effects immediately.
 
 ---
 
@@ -412,7 +434,7 @@ session ends. No hand-holding — see how far you get!
 
 | # | Challenge | Suggested agent |
 |---|-----------|----------------|
-| 🥉 | Stars scroll faster during a "warp zone" every 5 levels | `ui-renderer` |
+| 🥉 | Add a warp-speed trail and speed-lines during level-up | `vfx-polish` |
 | 🥈 | Enemies dodge player bullets at level 6+ | `physics-movement` |
 | 🥇 | Full 5-level campaign with a credits screen on completion | `gameplay-rules` |
 | 🏆 | Boss that splits into two mini-bosses at 25% HP | `boss-ai` + `physics-movement` |
@@ -498,7 +520,7 @@ git add src/game.js && git commit -m "feat: add shield powerup"
 │   │  @ui-renderer ──► .opencode/agents/ui-renderer.md    │
 │   │  @physics-movement ► physics-movement.md             │
 │   │  @gameplay-rules ──► gameplay-rules.md               │
-│   │  @audio-sfx (opt) ► audio-sfx.md                     │
+│   │  @vfx-polish (opt) ► vfx-polish.md                     │
 │   │  @boss-ai   (opt) ► boss-ai.md                       │
 │   │                                                 │     │
 │   │  Shared context: src/game.js ◄──────────────── │     │
@@ -525,7 +547,7 @@ git add src/game.js && git commit -m "feat: add shield powerup"
 4. **Agent files are just Markdown** — `.opencode/agents/*.md` are human-readable
    specs. You can read, edit, and version-control them like any other source file.
 
-5. **Expanding to 5 agents is additive** — `audio-sfx.md` and `boss-ai.md`
+5. **Expanding to 5 agents is additive** — `vfx-polish.md` and `boss-ai.md`
    are drop-in additions that don't require restructuring the existing three.
 
 ---

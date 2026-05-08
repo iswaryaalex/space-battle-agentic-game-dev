@@ -5,7 +5,6 @@ description: |
   game — screen shake, hit flashes, damage vignette, motion trails, and
   animated nebula background. No audio needed. Invoke after the base game
   is fully working.
-model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # VFX Polish Agent — Space Blaster  *(Optional — Agent 4)*

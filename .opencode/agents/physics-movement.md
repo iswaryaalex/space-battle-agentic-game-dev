@@ -4,7 +4,6 @@ description: |
   Adds player movement, keyboard input, bullet physics, enemy movement, and
   collision detection into game.html. Invoke this agent second, after
   ui-renderer has built the canvas and draw loop.
-model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # Physics / Movement Agent — Space Blaster

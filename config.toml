@@ -2,7 +2,7 @@
 # Routes all agent calls to the local Lemonade inference server
 
 [model]
-  default = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
+  # default = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
 [provider.openai]
   base_url = "http://localhost:8000/api/v0"
@@ -13,13 +13,13 @@
 
 [agents]
   [agents.ui-renderer]
-    model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
+    # model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
   [agents.physics-movement]
-    model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
+    # model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
   [agents.gameplay-rules]
-    model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
+    # model = "Qwen3-Coder-30B-A3B-Instruct-GGUF"
 
   # Optional — uncomment to activate
   # [agents.vfx-polish]

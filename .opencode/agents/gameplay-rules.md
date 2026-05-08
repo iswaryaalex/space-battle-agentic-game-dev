@@ -4,7 +4,6 @@ description: |
   Adds the state object, scoring, level progression, enemy spawning, lives
   system, and game-over logic into game.html. Invoke this agent third — it
   ties everything together and boots the game.
-model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # Gameplay Rules Agent — Space Blaster

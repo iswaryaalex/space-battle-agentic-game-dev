@@ -4,7 +4,6 @@ description: |
   Builds all visual output in game.html — canvas setup, draw loop, star-field,
   player ship, enemy shapes, particle explosions, and HUD. Invoke this agent
   first at workshop start to establish the visual foundation.
-model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # UI / Renderer Agent — Space Blaster

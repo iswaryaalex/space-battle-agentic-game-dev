@@ -4,7 +4,6 @@ description: |
   [OPTIONAL — Agent 5] Adds a dramatic 3-phase boss enemy with movement
   patterns, bullet-hell attacks, phase transitions, and a boss health bar.
   Invoke after the base game is fully working.
-model: openai/Qwen3-Coder-30B-A3B-Instruct-GGUF
 ---
 
 # Boss / AI Agent — Space Blaster  *(Optional — Agent 5)*

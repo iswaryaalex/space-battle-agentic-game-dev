@@ -49,7 +49,7 @@ sudo apt install lemonade-server
 ### 2 — Install OpenCode
 
 ```bash
-curl -fsSL https://opencode.ai/install.sh | sh
+curl -fsSL https://opencode.ai/install | bash
 ```
 
 ### 3 — Clone the workshop repo

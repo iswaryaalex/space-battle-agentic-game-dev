@@ -83,9 +83,11 @@ Select a recipe to import and use with Opencode:
   4) Gemma-4-26B-A4B-ThinkingCoder.json
   5) Qwen3.5-35B-A3B-NoThinking.json
   6) Qwen3.5-35B-A3B-ThinkingCoder.json
+  7) Qwen3.6-35B-A3B-NoThinking.json
+  8) Qwen3.6-35B-A3B-ThinkingCoder.json
 ```
 
-**Select option 6 — `Qwen3.5-35B-A3B-ThinkingCoder`**
+**Select option 8 — `Qwen3.6-35B-A3B-ThinkingCoder`**
 
 > Option 5 (NoThinking) is faster. Option 6 reasons through the code more
 > carefully — recommended for the best results during the workshop.
@@ -200,7 +202,7 @@ Uncomment the relevant agent in `.opencode/config.toml`, then:
 ```
 
 **Wrong model selected** — exit OpenCode, run `lemonade launch opencode` again
-and select option 5 or 6.
+and select option 7 or 8.
 
 **Agent broke the game**
 ```bash
@@ -222,7 +224,7 @@ git add game.html && git commit -m "feat: what you added"
   │                                                    │
   │  lemonade launch opencode                          │
   │  └─► Lemonade Server  (on-device GPU inference)   │
-  │       └─► Qwen3.5-35B-A3B-ThinkingCoder           │
+  │       └─► Qwen3.6-35B-A3B-ThinkingCoder           │
   │                                                    │
   │  OpenCode TUI                                      │
   │  ├─ @ui-renderer      ──► ui-renderer.md           │
